@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model customer_point {
+  id_customer String @id
+  nm_customer String
+  id_point String
+  point_type String
+  point_customer Int
+  no_hp_customer BigInt
+  address_customer String
+  point_detail point_details[]
+}
+
+model point_details {
+  id_point_detail String @id
+  id_customer String
+  customer_point customer_point @relation(fields: [id_customer], references: [id_customer])
+  id_point String
+  point_amount Int
+  transaction_type String
+  transaction_date String
+}
